@@ -73,20 +73,24 @@ namespace ClassLibrary1
             return numberOfPriceHistory;
         }
 
-        public void SeePriceHistoryInInterval(DateTime starDate, DateTime endDate)
+        public int SeePriceHistoryInInterval(DateTime starDate, DateTime endDate)
         {
             if (EndDate < DateTime.Now)
             {
                 throw new BusinessException("Product is not valid");
             }
+            int numberOfPriceHistory = 0;
             foreach (PriceHistory priceHistory in PriceHistoryList)
             {
-                if (priceHistory.Price.StartDate >= starDate && priceHistory.Price.EndDate <= endDate)
+                if (priceHistory.Price.StartDate >= starDate && (priceHistory.Price.EndDate <= endDate || !priceHistory.Price.EndDate.HasValue))
                 {
+                    numberOfPriceHistory += 1;
                     Console.WriteLine("Product price is {0}, valid from {1} until {2}",
                         priceHistory.Price.ProductPrice, priceHistory.Price.StartDate, priceHistory.Price.EndDate);
                 }
             }
+
+            return numberOfPriceHistory;
         }
 
         public double GetCurrentPrice()

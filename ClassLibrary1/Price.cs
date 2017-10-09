@@ -8,7 +8,7 @@ namespace ClassLibrary1
     {
         private double productPrice;
         private DateTime startDate;
-        private DateTime endDate;
+        private DateTime? endDate;
 
         public Price(DateTime startDate, double productPrice)
         {
@@ -16,15 +16,13 @@ namespace ClassLibrary1
             ProductPrice = productPrice;
         }
 
-        public Price(DateTime startDate, DateTime endDate, double productPrice)
-        {
-            StartDate = startDate;
-            EndDate = endDate;
-            ProductPrice = productPrice;
-        }
-
-        public DateTime EndDate { get => endDate; set => endDate = value; }
+        public DateTime? EndDate { get => endDate; set => endDate = value; }
         public DateTime StartDate { get => startDate; set => startDate = value; }
         public double ProductPrice { get => productPrice; set => productPrice = value; }
+
+        public bool IsEndDateNull()
+        {
+            return endDate.Equals(null);
+        }
     }
 }

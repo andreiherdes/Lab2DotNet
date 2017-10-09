@@ -59,8 +59,9 @@ namespace XUnitTestProject1
             testProduct.AddPrice(secondPrice);
 
             Price priceToBeTested = testProduct.PriceHistoryList[0].Price;
+            DateTime endDate = priceToBeTested.EndDate.Value;
 
-            Assert.True(priceToBeTested.EndDate.Date == DateTime.Now.Date);
+            Assert.True(endDate.Date == DateTime.Now.Date);
         }
 
         [Fact]
@@ -103,6 +104,30 @@ namespace XUnitTestProject1
             int numberOfPriceHistory = testProduct.SeePriceHistory();
 
             Assert.True(numberOfPriceHistory == 3);
+        }
+
+        [Fact]
+        public void GivenATimeIntervalWhenProductValidThenSeeFilteredHistory()
+        {
+            Product testProduct = new Product(new DateTime(2016,1,5), new DateTime(2018,1,10));
+
+            double firstPrice = 20;
+            double secondPrice = 50;
+            double thirdPrice = 60;
+
+            testProduct.AddPrice(firstPrice);
+            testProduct.AddPrice(secondPrice);
+            testProduct.AddPrice(thirdPrice);
+
+            DateTime outOfTimeZone = new DateTime(2020,10,1);
+            DateTime starDate = new DateTime(2016,10,1);
+            DateTime endDate = new DateTime(2017,10,1);
+
+            testProduct.PriceHistoryList[0].Price.StartDate = outOfTimeZone;
+
+            int numberOfFilteredPrices = testProduct.SeePriceHistoryInInterval(starDate, endDate);
+
+            Assert.True(numberOfFilteredPrices == 2);
         }
     }
 }
